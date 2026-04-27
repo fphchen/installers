@@ -103,7 +103,7 @@ if [[ $PKGS =~ ^[Yy]$ ]]; then
     hyprland_pkgs="grim hyprland polkit polkit-kde-agent swayidle swayimg waybar wl-clipboard wofi xdg-desktop-portal-hyprland xorg-xhost xorg-xwayland swww swaylock wev wlr-randr"
     app_pkgs="firefox gimp gparted kitty libreoffice openvpn pavucontrol signal-desktop vlc vim zathura zathura-pdf-mupdf zathura-ps"
     util_pkgs="brightnessctl cifs-utils dunst fzf gst-libav gvfs-nfs gvfs-smb lf networkmanager networkmanager-openvpn neofetch nfs-utils pacman-contrib python-pip rust rust-script slurp smbclient trash-cli unzip usbutilsi yt-dlp"
-    font_pkgs="noto-fonts-cjk ttf-firacode-nerd"
+    font_pkgs="noto-fonts-cjk noto-fonts-emoji ttf-firacode-nerd"
     theme_pkgs=""
     extra_pkgs="brave-bin joplin spotify"
     if ! $aur -S --noconfirm --needed $hyprland_pkgs $app_pkgs $util_pkgs $font_pkgs $theme_pkgs $extra_pkgs 2>&1 | tee -a $LOG; then

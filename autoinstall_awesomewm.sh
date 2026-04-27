@@ -103,7 +103,7 @@ if [[ $PKGS =~ ^[Yy]$ ]]; then
     awesomewm_pkgs="awesome-git feh picom polybar python-pywal rofi sxiv xdotool zscroll"
     app_pkgs="firefox gimp gparted kitty libreoffice openvpn pavucontrol signal-desktop vlc zathura zathura-pdf-mupdf zathura-ps"
     util_pkgs="brightnessctl cifs-utils dunst fzf gvfs-nfs gvfs-smb networkmanager-openvpn neofetch nfs-utils pacman-contrib python-pip rust-script slurp smbclient trash-cli unzip usbutils yt-dlp"
-    font_pkgs="noto-fonts-cjk ttf-firacode-nerd"
+    font_pkgs="noto-fonts-cjk noto-fonts-emoji ttf-firacode-nerd"
     theme_pkgs=""
     extra_pkgs="brave-bin joplin joplin-desktop spotify"
     if ! $aur -S --noconfirm --needed $awesomewm_pkgs $app_pkgs $util_pkgs $font_pkgs $theme_pkgs $extra_pkgs 2>&1 | tee -a $LOG; then
