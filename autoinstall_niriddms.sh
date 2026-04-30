@@ -82,7 +82,7 @@ read -n1 -rep "${CAT} Would you like to install the packages? (y/n)" PKGS
 if [[ $PKGS =~ ^[Yy]$ ]]; then
     dms_pkgs="cava cups-pk-helper kimageformats power-profiles-daemon swayimg wev"
     app_pkgs="vlc zathura zathura-pdf-mupdf zathura-ps"
-    util_pkgs="brightnessctl fzf grim gvfs-nfs lf neofetch networkmanager slurp usbutils yt-dlp"
+    util_pkgs="brightnessctl fzf grim gvfs-nfs lf neofetch networkmanager slurp thunar thunar-archive-plugin thunar-volman thunar-media-tags-plugin tumbler usbutils yt-dlp"
     font_pkgs="noto-fonts noto-fonts-cjk noto-fonts-emoji"
     theme_pkgs="qt5-graphicaleffects qt5-quickcontrols2 qt5-quickcontrols qt5-svg"
     extra_pkgs="brave-bin gimp joplin-desktop libreoffice signal-desktop spotify-launcher"
