@@ -84,7 +84,7 @@ if [[ $PKGS =~ ^[Yy]$ ]]; then
     app_pkgs="vlc zathura zathura-pdf-mupdf zathura-ps"
     util_pkgs="brightnessctl fzf grim gvfs-nfs lf neofetch networkmanager slurp usbutils yt-dlp"
     font_pkgs="noto-fonts noto-fonts-cjk noto-fonts-emoji"
-    theme_pkgs=""
+    theme_pkgs="qt5-graphicaleffects qt5-quickcontrols2 qt5-quickcontrols qt5-svg"
     extra_pkgs="brave-bin gimp joplin-desktop libreoffice signal-desktop spotify-launcher"
     if ! $aur -S --noconfirm --needed $dms_pkgs $app_pkgs $util_pkgs $font_pkgs $theme_pkgs $extra_pkgs 2>&1 | tee -a $LOG; then
         print_error " Failed to install additional packages - please check ${LOG}\n"
