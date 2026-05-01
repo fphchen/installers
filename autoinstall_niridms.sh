@@ -82,9 +82,9 @@ read -n1 -rep "${CAT} Would you like to install the packages? (y/n)" PKGS
 if [[ $PKGS =~ ^[Yy]$ ]]; then
     dms_pkgs="cava cups-pk-helper kimageformats power-profiles-daemon swayimg wev"
     app_pkgs="vlc zathura zathura-pdf-mupdf zathura-ps"
-    util_pkgs="brightnessctl fzf grim gvfs-nfs lf neofetch networkmanager slurp thunar thunar-archive-plugin thunar-volman thunar-media-tags-plugin tumbler usbutils yt-dlp"
+    util_pkgs="brightnessctl fzf grim gvfs-nfs gparted lf neofetch networkmanager polkit polkit-gnome slurp usbutils thunar thunar-archive-plugin thunar-volman thunar-media-tags-plugin tumbler yt-dlp xorg-xhost xdg-desktop-portal-gtk"
     font_pkgs="noto-fonts noto-fonts-cjk noto-fonts-emoji"
-    theme_pkgs="qt5-graphicaleffects qt5-quickcontrols2 qt5-quickcontrols qt5-svg"
+    theme_pkgs=""
     extra_pkgs="brave-bin gimp joplin-desktop libreoffice signal-desktop spotify-launcher"
     if ! $aur -S --noconfirm --needed $dms_pkgs $app_pkgs $util_pkgs $font_pkgs $theme_pkgs $extra_pkgs 2>&1 | tee -a $LOG; then
         print_error " Failed to install additional packages - please check ${LOG}\n"
@@ -109,6 +109,18 @@ else
     sleep 1
 fi
 
+read -n1 -rep "${CAT} Would you like to install Dank Dark Material Shell? (y/n)" DMS
+if [[ $DMS =~ ^[Yy]$ ]]; then
+    if ! curl -fsSL https://install.danklinux.com | sh 2>&1 | tee -a $LOG; then
+        print_error " Failed to install Dank Material Shell - please check ${LOG}\n"
+        exit 1
+    fi
+    print_success " All Dank Material Shell packages installed successfully.\n"
+else
+    printf "${YELLOW} No Dank Material Shell packages installed. Moving on!\n"
+    sleep 1
+fi
+
 ### Symbolic linking Config Files ###
 read -n1 -rep "${CAT} Would you like to git clone and symbolic link config files? (y/n)" GITCFG
 if [[ $GITCFG =~ ^[Yy]$ ]]; then
@@ -128,6 +140,7 @@ if [[ $GITCFG =~ ^[Yy]$ ]]; then
     rm -rf ~/.config/neofetch 2>&1 | tee -a $LOG
     rm -rf ~/.config/niri 2>&1 | tee -a $LOG
     rm -rf ~/.config/zathura 2>&1 | tee -a $LOG
+    rm -rf ~/.config/xfce4 2>&1 | tee -a $LOG
     rm -rf ~/.bashrc 2>&1 | tee -a $LOG
     rm -rf ~/.zshrc 2>&1 | tee -a $LOG
     rm -rf ~/.vimrc 2>&1 | tee -a $LOG
@@ -140,6 +153,7 @@ if [[ $GITCFG =~ ^[Yy]$ ]]; then
     ln -s ~/Documents/git/fphchen/dotfiles/configs/neofetch ~/.config/ 2>&1 | tee -a $LOG
     ln -s ~/Documents/git/fphchen/dotfiles/configs/niri ~/.config/ 2>&1 | tee -a $LOG
     ln -s ~/Documents/git/fphchen/dotfiles/configs/zathura ~/.config/ 2>&1 | tee -a $LOG
+    ln -s ~/Documents/git/fphchen/dotfiles/configs/xfce4 ~/.config/ 2>&1 | tee -a $LOG
     ln -s ~/Documents/git/fphchen/dotfiles/configs/.bashrc ~/ 2>&1 | tee -a $LOG
     ln -s ~/Documents/git/fphchen/dotfiles/configs/.zshrc ~/ 2>&1 | tee -a $LOG
     ln -s ~/Documents/git/fphchen/dotfiles/configs/.vimrc ~/ 2>&1 | tee -a $LOG
@@ -180,6 +194,7 @@ if [[ $SUNSHINE =~ ^[Yy]$ ]]; then
         printf " Activating avahi-daemon services for Sunshine...\n"
         sudo systemctl enable --now avahi-daemon
         sleep 1
+        systemctl --user enable --now sunshine.service
     fi
 else
     printf "${YELLOW} No remote desktop streaming packages installed. Goodbye!\n"
@@ -225,15 +240,21 @@ fi
 read -n1 -rep "${CAT} OPTIONAL - Would you like to install SDDM Login Manager? (y/n)" LOGINMAN
 if [[ $LOGINMAN =~ ^[Yy]$ ]]; then
     printf "${GREEN} Removing existing LightDM packages...\n"
+    sudo systemctl disable lightdm.service
     $aur -Rns --noconfirm lightdm lightdm-gtk-greeter 2>&1 | tee -a $LOG
 
     printf "${GREEN} Installing SDDM packages...\n"
-    loginman_pkgs="sddm qt5-graphicaleffects qt5-quickcontrols qt5-quickcontrols2 qt5-svg qt5-multimedia gst-libav gst-plugins-good phonon-qt5-gstreamer"
+    loginman_pkgs="sddm qt5-declarative qt5-graphicaleffects qt5-quickcontrols qt5-quickcontrols2 qt5-svg qt5-multimedia gst-libav gst-plugins-good phonon-qt5-gstreamer"
     if ! $aur -S --noconfirm --needed $loginman_pkgs 2>&1 | tee -a $LOG; then
         print_error "Failed to install SDDM packages - please check ${LOG}\n"
     else
+        printf " Copying SDDM config files, themes, icons from cloned git repositories"
+        sudo cp -r ~/Documents/git/fphchen/dotfiles/configs/sddm/NiriDMS/sddm.conf /etc/sddm.conf >&1 | tee -a $LOG
+        sudo cp -r ~/Documents/git/fphchen/dotfiles/configs/sddm/NiriDMS/sddm.conf.d /etc/sddm.conf.d >&1 | tee -a $LOG
+        sudo cp -r ~/Documents/git/fphchen/dotfiles/configs/sddm/themes/archcraft /usr/share/sddm/themes/archcraft >&1 | tee -a $LOG
+        sudo cp -r ~/Documents/git/fphchen/dotfiles/images/.face  ~/.face >&1 | tee -a $LOG
         printf " Activating SDDM services...\n"
-        sudo systemctl enable sddm
+        sudo systemctl enable sddm.service >&1 | tee -a $LOG
         sleep 1
     fi
 else
