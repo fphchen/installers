@@ -109,18 +109,6 @@ else
     sleep 1
 fi
 
-read -n1 -rep "${CAT} Would you like to install Dank Dark Material Shell? (y/n)" DMS
-if [[ $DMS =~ ^[Yy]$ ]]; then
-    if ! curl -fsSL https://install.danklinux.com | sh 2>&1 | tee -a $LOG; then
-        print_error " Failed to install Dank Material Shell - please check ${LOG}\n"
-        exit 1
-    fi
-    print_success " All Dank Material Shell packages installed successfully.\n"
-else
-    printf "${YELLOW} No Dank Material Shell packages installed. Moving on!\n"
-    sleep 1
-fi
-
 ### Symbolic linking Config Files ###
 read -n1 -rep "${CAT} Would you like to git clone and symbolic link config files? (y/n)" GITCFG
 if [[ $GITCFG =~ ^[Yy]$ ]]; then
